@@ -1,15 +1,36 @@
-import React, { PropTypes, Component, Text, View, ListView } from 'react-native';
+import React, {
+  PropTypes,
+  Component,
+  Text,
+  View,
+  ListView,
+  ActivityIndicatorIOS,
+  TouchableHighlight
+ } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { bindActionCreators } from 'redux';
+import { Actions } from 'react-native-router-flux'
 
 
 const styles = {
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    backgroundColor: "#ffffff"
+    paddingTop: 80,
+    backgroundColor: "#7c4dff"
+  },
+  list: {
+    flex: 1
+  },
+  row: {
+    margin: 10,
+    color: "#ffffff",
+    fontWeight: "bold"
+  },
+  indicator: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
   }
 }
 
@@ -32,18 +53,40 @@ class ParkingAreas extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(nextProps.parkingAreas.data)
     })
   };
 
+  handleRowPress(rowData) {
+    Actions.areaDetail({data: rowData, title: rowData.site.stationName});
+  };
+
   render() {
+    const { isFetching } = this.props.parkingAreas;
+
+    const listing = isFetching ? (<ActivityIndicatorIOS
+      animating={isFetching}
+      color="#ffffff"
+      size="large"
+      style={styles.indicator}
+      />) : (
+        <ListView
+          automaticallyAdjustContentInsets={true}
+          style={styles.list}
+          dataSource={this.state.dataSource}
+          pageSize={40}
+          renderRow={(rowData) => (
+            <TouchableHighlight onPress={this.handleRowPress.bind(this, rowData)}>
+              <Text style={styles.row}>{rowData.site.stationName}</Text>
+            </TouchableHighlight>
+          )}/>
+      );
+
     return (
-      <ListView
-        style={styles.container}
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) => (<Text>{rowData.station}</Text>)}/>
+      <View style={styles.container}>
+        {listing}
+      </View>
     )
   }
 }

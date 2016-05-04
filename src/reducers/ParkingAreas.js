@@ -4,21 +4,25 @@ import objectAssign from 'object-assign';
 
 
 const initialState = {
-  data: []
+  data: [],
+  isFetching: true
 };
 
 export default createReducer({
   [calls.getParkingAreas.request]: (state, payload) => {
-    console.log('getParkingAreas.request ', payload);
-    return state;
+    return objectAssign({}, state, {
+      isFetching: true
+    });
   },
   [calls.getParkingAreas.ok]: (state, payload) => {
     return objectAssign({}, state, {
-      data: payload.results
+      data: payload.allocations,
+      isFetching: false
     });
   },
   [calls.getParkingAreas.error]: (state, payload) => {
-    console.log('getParkingAreas.error ', payload);
-    return state;
+    return objectAssign({}, state, {
+      isFetching: false
+    });
   }
 }, initialState);

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import thunk from 'redux-thunk'
 
 import ParkingAreas from '../containers/ParkingAreas';
+import ParkingAreaDetail from '../containers/ParkingAreaDetail';
 
 const RouterWithRedux = connect()(Router);
 import reducers from '../reducers';
@@ -22,7 +23,8 @@ class App extends Component {
       <Provider store={store}>
         <RouterWithRedux>
           <Scene key="root">
-            <Scene key="areas" component={ParkingAreas} title="Start" initial={true} />
+            <Scene key="areas" component={ParkingAreas} title="Parking areas" initial={true} />
+            <Scene key="areaDetail" component={ParkingAreaDetail} title="Detail" />
           </Scene>
         </RouterWithRedux>
       </Provider>

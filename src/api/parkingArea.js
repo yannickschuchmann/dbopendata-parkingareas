@@ -5,5 +5,5 @@ const request = (query) => {
 }
 
 export const getParkingAreas = () => {
-  return request("http://opendata.dbbahnpark.info/api/beta/stations")
+  return request("http://opendata.dbbahnpark.info/api/beta/occupancy")
 }
